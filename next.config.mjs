@@ -1,4 +1,4 @@
-import { env } from "./src/env/server.mjs";
+import { env } from './src/env/server.mjs';
 
 /**
  * Don't be scared of the generics here.
@@ -16,8 +16,9 @@ export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
   // Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
+  images: { domains: ['media.graphassets.com'] },
   i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
-  },
+    locales: ['en'],
+    defaultLocale: 'en'
+  }
 });
