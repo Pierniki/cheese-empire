@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
   return (
-    <div className="min-h-screen bg-[#fff3d4] saturate-[0.8]">
+    <div className="min-h-screen  overflow-y-auto scroll-smooth bg-[#fff3d4] antialiased saturate-[0.8]">
       <div className="relative z-10 w-full shadow-lg">
         <div className="container relative z-10 mx-auto flex items-center justify-center px-16">
           <div className="w-full border-b-4 border-[#1a1813]" />
@@ -31,10 +31,14 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tempus eleifend sem, at congue dui.
             </p>
             <div className="mt-8 mb-16 w-full border-b-2 border-[#fff3d4]" />
-            <button className=" mx-auto border-2 border-yellow-50 bg-black bg-opacity-20 px-4 py-2  font-roboto text-lg font-bold uppercase text-yellow-50 duration-100 hover:scale-105 hover:shadow-lg">
-              Show me the Cheese
-            </button>
-            <BsArrowDownCircleFill className="mt-8 cursor-pointer text-4xl shadow-sm duration-100 hover:scale-110 hover:shadow-lg" />
+            <a href="#offer">
+              <button className=" mx-auto border-2 border-yellow-50 bg-black bg-opacity-20 px-4 py-2  font-roboto text-lg font-bold uppercase text-yellow-50 duration-100 hover:scale-105 hover:shadow-lg">
+                Show me the Cheese
+              </button>
+            </a>
+            <a href="#offer">
+              <BsArrowDownCircleFill className="mt-8 cursor-pointer text-4xl shadow-sm duration-100 hover:scale-110 hover:shadow-lg" />
+            </a>
           </div>
         </div>
         <div
