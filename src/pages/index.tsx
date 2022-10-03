@@ -7,16 +7,18 @@ import Image from 'next/image';
 const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
   return (
     <div className="min-h-screen bg-[#fff3d4] saturate-[0.8]">
-      <div className="relative z-10 flex w-full items-center justify-center px-16 shadow-lg">
-        <div className="w-full border-b-4 border-[#1a1813]" />
-        <div className="relative flex flex-col items-center p-8">
-          <h2 className="min-w-[350px] text-center font-pacifico text-5xl font-bold text-[#1a1813]">Cheese Empire</h2>
-          <h5 className="z-10 mt-2 font-pacifico text-lg text-[#ffa300]">{"Feelin' cheesy?"}</h5>
-          <div className="absolute -bottom-4 z-0 h-8 w-8 rotate-45 bg-[#fff3d4] lg:h-16 lg:w-16"></div>
+      <div className="relative z-10 w-full shadow-lg">
+        <div className="container relative z-10 mx-auto flex items-center justify-center px-16">
+          <div className="w-full border-b-4 border-[#1a1813]" />
+          <div className="relative flex flex-col items-center p-8">
+            <h2 className="min-w-[350px] text-center font-pacifico text-5xl font-bold text-[#1a1813]">Cheese Empire</h2>
+            <h5 className="z-10 mt-2 font-pacifico text-lg text-[#ffa300]">{"Feelin' cheesy?"}</h5>
+            <div className="absolute -bottom-4 z-0 h-8 w-8 rotate-45 bg-[#fff3d4] lg:h-16 lg:w-16"></div>
+          </div>
+          <div className="w-full border-b-4 border-[#1a1813]" />
         </div>
-        <div className="w-full border-b-4 border-[#1a1813]" />
       </div>
-      <section className="relative grid min-h-[800px] w-full  overflow-hidden" id="hero">
+      <section className="relative grid min-h-[800px] w-full overflow-hidden" id="hero">
         <div className="container mx-auto grid grid-cols-1 p-8  lg:grid-cols-5 lg:p-16">
           <div className="z-10 mx-auto flex max-w-[600px] flex-col items-center justify-center border-4 border-[#fff3d4] p-8 font-serif text-yellow-50 lg:col-span-2 lg:p-12">
             <p className="text-center text-4xl font-bold text-yellow-50">
@@ -29,10 +31,10 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tempus eleifend sem, at congue dui.
             </p>
             <div className="mt-8 mb-16 w-full border-b-2 border-[#fff3d4]" />
-            <button className=" mx-auto border-2 border-yellow-50 bg-black bg-opacity-20 px-4 py-2  text-lg font-bold uppercase text-yellow-50">
+            <button className=" mx-auto border-2 border-yellow-50 bg-black bg-opacity-20 px-4 py-2  font-roboto text-lg font-bold uppercase text-yellow-50 duration-100 hover:scale-105 hover:shadow-lg">
               Show me the Cheese
             </button>
-            <BsArrowDownCircleFill className="mt-8 cursor-pointer text-4xl" />
+            <BsArrowDownCircleFill className="mt-8 cursor-pointer text-4xl shadow-sm duration-100 hover:scale-110 hover:shadow-lg" />
           </div>
         </div>
         <div
@@ -43,20 +45,44 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
           <div className="h-8 w-8 rotate-45 bg-[#fff3d4] lg:h-16 lg:w-16"></div>
         </div>
       </section>
-      <section className="container mx-auto px-16 py-16">
-        <h5 className="mb-16 w-full  text-center font-serif text-4xl font-bold text-[#1a1813]">Our offer</h5>
-        <div className="grid grid-cols-1 items-center justify-center gap-8 sm:grid-cols-2 md:grid-cols-3">
-          {props.cheeses.map((cheese) => {
-            return (
-              <div key={cheese.id} className="mx-auto">
-                <Image src={cheese.image.url} width="300" height="300" alt={cheese.name} />
-                <p>{cheese.name}</p>
-              </div>
-            );
-          })}
+      <section className="bg-[#fff3d4]" id="offer">
+        <div className="container mx-auto px-16 py-16">
+          <h5 className="mb-16 w-full  text-center font-serif text-5xl font-bold text-[#1a1813]">Our offer</h5>
+          <div className="grid grid-cols-1 items-center justify-center gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+            {props.cheeses.map((cheese) => {
+              const primaryCategory = cheese.categories[0];
+              return (
+                <div
+                  key={cheese.id}
+                  className="relative mx-auto flex cursor-pointer flex-col font-roboto shadow-sm duration-100 hover:scale-105 hover:shadow-lg"
+                >
+                  <div className="relative flex max-h-[250px] max-w-[300px] bg-white">
+                    <Image
+                      src={cheese.image.url}
+                      width="300"
+                      height="250"
+                      alt={cheese.name}
+                      className="object-cover opacity-90 brightness-110"
+                    />
+                    <div className="absolute h-full w-full bg-gradient-to-t from-[#1a1813] via-transparent to-transparent"></div>
+                    <div className="absolute top-0 p-4">
+                      {primaryCategory && (
+                        <div className="inline-block rounded-sm bg-[#ffa300] px-2 shadow-sm">
+                          {primaryCategory.name}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="bg-[#1a1813] p-4 pb-0">
+                    <p className="relative bottom-4 text-xl text-white">{cheese.name}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
-      <footer className="min-h-[300px] border-t-4 border-[#1a1813]"></footer>
+      <footer className="min-h-[300px] "></footer>
     </div>
   );
 };
@@ -68,6 +94,10 @@ const allCheesesQueryDocument = gql`
       name
       image {
         url
+      }
+      categories {
+        id
+        name
       }
     }
   }

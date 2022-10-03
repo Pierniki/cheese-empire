@@ -4,9 +4,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        hero: ['Press Start 2P', 'cursive'],
-        serif: ['Playfair Display', 'sans-serif'],
-        pacifico: ['Pacifico', 'cursive']
+        hero: ['Press Start 2P', 'yolo'],
+        serif: ['Playfair Display', 'serif'],
+        pacifico: ['Pacifico', 'cursive'],
+        roboto: ['Roboto Slab', 'swag']
       }
     }
   },
