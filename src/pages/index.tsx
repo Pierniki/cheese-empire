@@ -3,16 +3,17 @@ import { BsArrowDownCircleFill } from 'react-icons/bs';
 import { AllCheesesQuery } from '../gql/graphql';
 import hygraphClient, { gql } from '../lib/hygraphClient';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
   return (
-    <div className="min-h-screen  overflow-y-auto scroll-smooth bg-[#fff3d4] antialiased saturate-[0.8]">
+    <>
       <div className="relative z-10 w-full shadow-lg">
         <div className="container relative z-10 mx-auto flex items-center justify-center px-16">
           <div className="w-full border-b-4 border-[#1a1813]" />
           <div className="relative flex flex-col items-center p-8">
             <h2 className="min-w-[350px] text-center font-pacifico text-5xl font-bold text-[#1a1813]">Cheese Empire</h2>
-            <h5 className="z-10 mt-2 font-pacifico text-lg text-[#ffa300]">{"Feelin' cheesy?"}</h5>
+            <span className="z-10 mt-2 font-pacifico text-lg text-[#ffa300]">{"Feelin' cheesy?"}</span>
             <div className="absolute -bottom-4 z-0 h-8 w-8 rotate-45 bg-[#fff3d4] lg:h-16 lg:w-16"></div>
           </div>
           <div className="w-full border-b-4 border-[#1a1813]" />
@@ -56,46 +57,44 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (props) =
             {props.cheeses.map((cheese) => {
               const primaryCategory = cheese.categories[0];
               return (
-                <div
-                  key={cheese.id}
-                  className="relative mx-auto flex cursor-pointer flex-col font-roboto shadow-sm duration-100 hover:scale-105 hover:shadow-lg"
-                >
-                  <div className="relative flex max-h-[250px] max-w-[300px] bg-white">
-                    <Image
-                      src={cheese.image.url}
-                      width="300"
-                      height="250"
-                      alt={cheese.name}
-                      className="object-cover opacity-90 brightness-110"
-                    />
-                    <div className="absolute h-full w-full bg-gradient-to-t from-[#1a1813] via-transparent to-transparent"></div>
-                    <div className="absolute top-0 p-4">
-                      {primaryCategory && (
-                        <div className="inline-block rounded-sm bg-[#ffa300] px-2 shadow-sm">
-                          {primaryCategory.name}
-                        </div>
-                      )}
+                <Link key={cheese.id} passHref href={'/cheeses/' + cheese.slug}>
+                  <div className="relative mx-auto flex cursor-pointer flex-col font-roboto shadow-sm duration-100 hover:scale-105 hover:shadow-lg">
+                    <div className="relative flex max-h-[250px] max-w-[300px] bg-white">
+                      <Image
+                        src={cheese.image.url}
+                        width="300"
+                        height="250"
+                        alt={cheese.name}
+                        className="object-cover opacity-90 brightness-110"
+                      />
+                      <div className="absolute h-full w-full bg-gradient-to-t from-[#1a1813] via-transparent to-transparent"></div>
+                      <div className="absolute top-0 p-4">
+                        {primaryCategory && (
+                          <div className="inline-block rounded-sm bg-[#ffa300] px-2 shadow-sm">
+                            {primaryCategory.name}
+                          </div>
+                        )}
+                      </div>
+                      <p className="absolute -bottom-8 max-w-[75%] p-4 text-xl text-white">{cheese.name}</p>
                     </div>
+                    <div className="h-8  bg-[#1a1813] pb-0"></div>
                   </div>
-                  <div className="bg-[#1a1813] p-4 pb-0">
-                    <p className="relative bottom-4 text-xl text-white">{cheese.name}</p>
-                  </div>
-                </div>
+                </Link>
               );
             })}
           </div>
         </div>
       </section>
-      <footer className="min-h-[300px] "></footer>
-    </div>
+    </>
   );
 };
 
-const allCheesesQueryDocument = gql`
+export const allCheesesQueryDocument = gql`
   query AllCheeses {
     cheeses {
       id
       name
+      slug
       image {
         url
       }

@@ -1,14 +1,12 @@
 import type { AppType } from 'next/dist/shared/lib/utils';
+import { Layout } from '../components/Layout';
 import '../styles/globals.css';
-import { seoConfig as SEO } from '../seo/nextSeoConfig';
-import { DefaultSeo } from 'next-seo';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <>
-      <DefaultSeo {...SEO} />
+    <Layout>
       <Component {...pageProps} />
-    </>
+    </Layout>
   );
 };
 

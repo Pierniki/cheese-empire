@@ -4327,13 +4327,21 @@ export enum _SystemDateTimeFieldVariation {
   Localization = 'localization'
 }
 
+export type CheeseQueryVariables = Exact<{
+  slug?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type CheeseQuery = { __typename?: 'Query', cheese?: { __typename?: 'Cheese', description: string, id: string, name: string, categories: Array<{ __typename?: 'Category', name: string, id: string }>, image: { __typename?: 'Asset', url: string } } | null };
+
 export type AllCheesesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllCheesesQuery = { __typename?: 'Query', cheeses: Array<{ __typename?: 'Cheese', id: string, name: string, image: { __typename?: 'Asset', url: string }, categories: Array<{ __typename?: 'Category', id: string, name: string }> }> };
+export type AllCheesesQuery = { __typename?: 'Query', cheeses: Array<{ __typename?: 'Cheese', id: string, name: string, slug: string, image: { __typename?: 'Asset', url: string }, categories: Array<{ __typename?: 'Category', id: string, name: string }> }> };
 
 
-export const AllCheesesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllCheeses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cheeses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<AllCheesesQuery, AllCheesesQueryVariables>;
+export const CheeseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Cheese"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cheese"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}}]} as unknown as DocumentNode<CheeseQuery, CheeseQueryVariables>;
+export const AllCheesesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllCheeses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cheeses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<AllCheesesQuery, AllCheesesQueryVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -8653,17 +8661,41 @@ export enum _SystemDateTimeFieldVariation {
   Localization = 'localization'
 }
 
+export type CheeseQueryVariables = Exact<{
+  slug?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type CheeseQuery = { __typename?: 'Query', cheese?: { __typename?: 'Cheese', description: string, id: string, name: string, categories: Array<{ __typename?: 'Category', name: string, id: string }>, image: { __typename?: 'Asset', url: string } } | null };
+
 export type AllCheesesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllCheesesQuery = { __typename?: 'Query', cheeses: Array<{ __typename?: 'Cheese', id: string, name: string, image: { __typename?: 'Asset', url: string }, categories: Array<{ __typename?: 'Category', id: string, name: string }> }> };
+export type AllCheesesQuery = { __typename?: 'Query', cheeses: Array<{ __typename?: 'Cheese', id: string, name: string, slug: string, image: { __typename?: 'Asset', url: string }, categories: Array<{ __typename?: 'Category', id: string, name: string }> }> };
 
 
+export const CheeseDocument = gql`
+    query Cheese($slug: String = "") {
+  cheese(where: {slug: $slug}) {
+    description
+    id
+    name
+    categories {
+      name
+      id
+    }
+    image {
+      url
+    }
+  }
+}
+    `;
 export const AllCheesesDocument = gql`
     query AllCheeses {
   cheeses {
     id
     name
+    slug
     image {
       url
     }
@@ -8682,6 +8714,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    Cheese(variables?: CheeseQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CheeseQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CheeseQuery>(CheeseDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Cheese', 'query');
+    },
     AllCheeses(variables?: AllCheesesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AllCheesesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<AllCheesesQuery>(AllCheesesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AllCheeses', 'query');
     }
