@@ -13,17 +13,17 @@ import _ from 'lodash';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { FaUserCircle } from 'react-icons/fa';
 import { useMutation } from 'react-query';
 
 const CheesePage: NextPage<InferNextProps<typeof getStaticProps>> = ({ cheese, similarCheeses, reviews }) => {
   const router = useRouter();
 
-  const rateCheeseMutation = useMutation((input: { rating: number; reviewer?: string; content?: string }) =>
-    reviewCheese({ ...input, cheeseId: cheese.id })
-  );
-
   if (router.isFallback) return null;
+
+  const averateRating = getRatingFromReviews(reviews);
 
   return (
     <div className="container mx-auto p-8 sm:p-16">
@@ -67,45 +67,10 @@ const CheesePage: NextPage<InferNextProps<typeof getStaticProps>> = ({ cheese, s
         <div className="flex flex-col gap-4">
           <p className="font-serif text-4xl font-bold text-stone-900">Reviews</p>
           <div className="flex flex-nowrap items-center gap-1">
-            {[1, 2, 3, 4, 5].map((star) => {
-              return <div key={cheese.id + star} className="h-6 w-6 rounded-full bg-stone-900 opacity-20"></div>;
-            })}
-            <span className="ml-2 font-semibold">4.5/5</span>
+            <Rating rating={averateRating} size="16px" />
+            {reviews.length > 0 && <span className="ml-2 font-semibold">{`${(averateRating / 2).toFixed(1)}/5`}</span>}
           </div>
-          <div className="mt-4 flex w-full flex-col font-roboto">
-            <p className=" bg-amber-300 px-4 py-1 text-lg ">Submit a review:</p>
-            <form className="flex w-full flex-col gap-2 bg-stone-900 px-4 py-2 text-sm">
-              <div className="grid w-full grid-cols-2 gap-8">
-                <div className="flex flex-col gap-1">
-                  <label className="text-gray-50">{'Your name (optional):'}</label>
-                  <input type="text" className=" bg-gray-50 p-2"></input>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label className="text-gray-50 ">Rating:</label>
-                  <select className="h-full bg-gray-50 p-2 " defaultValue={5}>
-                    {[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map((rating) => {
-                      return (
-                        <option value={rating} key={'rating-select-' + rating}>
-                          {rating}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-gray-50">Review:</label>
-                <textarea className="bg-gray-50 p-2" />
-              </div>
-
-              <div className="my-1 flex items-end justify-end">
-                <button className="transition-bg bg-amber-400 px-4 py-2  duration-100 hover:bg-amber-300 active:bg-amber-200 ">
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-          <div className="font-roboto text-stone-900">
+          <div className="flex flex-col gap-4 font-roboto text-stone-900">
             {reviews.map((review) => {
               return (
                 <div key={'review-' + review.id} className="flex flex-col gap-1">
@@ -122,6 +87,7 @@ const CheesePage: NextPage<InferNextProps<typeof getStaticProps>> = ({ cheese, s
               );
             })}
           </div>
+          <RateCheeseForm cheeseId={cheese.id} />
         </div>
       </div>
       {similarCheeses.length > 0 && (
@@ -132,6 +98,55 @@ const CheesePage: NextPage<InferNextProps<typeof getStaticProps>> = ({ cheese, s
           <CheeseGrid cheeses={similarCheeses} />
         </div>
       )}
+    </div>
+  );
+};
+
+const RateCheeseForm: React.FC<{ cheeseId: string }> = ({ cheeseId }) => {
+  const { register, handleSubmit } = useForm<{ reviewer: string; rating: string; content: string }>();
+
+  const rateCheeseMutation = useMutation((input: { rating: number; reviewer?: string; content?: string }) =>
+    reviewCheese({ ...input, cheeseId: cheeseId })
+  );
+
+  const onSubmit = handleSubmit((data) => rateCheeseMutation.mutate({ ...data, rating: parseInt(data.rating) }));
+
+  return (
+    <div className="mt-4 flex w-full flex-col font-roboto">
+      <p className=" bg-amber-300 px-4 py-1 text-lg ">Submit a review:</p>
+      <form className="flex w-full flex-col gap-2 bg-stone-900 px-4 py-2 text-sm" onSubmit={onSubmit}>
+        <div className="grid w-full grid-cols-2 gap-8">
+          <div className="flex flex-col gap-1">
+            <label className="text-gray-50">Your name</label>
+            <input type="text" className=" bg-gray-50 p-2" {...register('reviewer')}></input>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-gray-50 ">Rating:</label>
+            <select className="h-full bg-gray-50 p-2 " defaultValue={10} {...register('rating')}>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((rating) => {
+                return (
+                  <option value={rating} key={'rating-select-' + rating}>
+                    {rating / 2}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-gray-50">Review:</label>
+          <textarea className="bg-gray-50 p-2" {...register('content')} />
+        </div>
+
+        <div className="my-1 flex items-end justify-end">
+          <button
+            className="transition-bg bg-amber-400 px-4 py-2  duration-100 hover:bg-amber-300 active:bg-amber-200 disabled:opacity-50"
+            disabled={rateCheeseMutation.isLoading}
+          >
+            Submit
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
