@@ -2,28 +2,25 @@ import { CheeseGrid } from '@/components/CheeseGrid';
 import { getAllCheeses } from '@/lib/getAllCheeses';
 import { getCheese } from '@/lib/getCheese';
 import { getCheesesByCategories } from '@/lib/getCheesesByCategories';
+import { getRatingByCheeseIds } from '@/lib/getRatingByCheeseIds';
+import { reviewCheese } from '@/lib/reviewCheese';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
 import { InferNextProps } from '@/utils/InferStaticProps';
+import { getCookie } from 'cookies-next';
 import _ from 'lodash';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useMutation } from 'react-query';
 
-const CheesePage: NextPage<InferNextProps<typeof getStaticProps>> = ({ cheese, similarCheesesByCategory }) => {
+const CheesePage: NextPage<InferNextProps<typeof getStaticProps>> = ({ cheese, similarCheeses }) => {
   const router = useRouter();
 
-  const similarCheeses = React.useMemo(() => {
-    return similarCheesesByCategory
-      .flatMap((category) =>
-        category.cheeses.map(({ reviews, ...cheese }) => ({
-          ...cheese,
-          rating: getRatingFromReviews(reviews)
-        }))
-      )
-      .filter((similarCheese) => similarCheese.id !== cheese.id);
-  }, [similarCheesesByCategory, cheese.id]);
+  const rateCheeseMutation = useMutation((input: { rating: number; reviewer?: string; content?: string }) =>
+    reviewCheese({ ...input, cheeseId: cheese.id, reviewerId: getCookie('user-token')?.toString() ?? '' })
+  );
 
   if (router.isFallback) return null;
 
@@ -47,6 +44,7 @@ const CheesePage: NextPage<InferNextProps<typeof getStaticProps>> = ({ cheese, s
             })}
           </div>
           <p className="font-roboto">{cheese.description}</p>
+          <button onClick={() => rateCheeseMutation.mutate({ rating: 10 })}>Rate 5 stars</button>
         </div>
       </div>
       {similarCheeses.length > 0 && (
@@ -84,11 +82,22 @@ export const getStaticProps = async ({ params }: { params: { slug: string } }) =
   const similarCheesesQuery = await getCheesesByCategories({
     name_in: cheeseQuery.cheese.categories.map((category) => category.name)
   });
+  const similarCheeses = similarCheesesQuery.categories.flatMap((cat) => cat.cheeses);
+
+  const reviews = await getRatingByCheeseIds({
+    cheeseIds: similarCheeses.map((cheese) => cheese.id)
+  });
+  const reviewsByCheese = _.groupBy(reviews.reviews, 'cheese.id');
+
+  const ratedSimilarCheeses = similarCheeses.map((cheese) => ({
+    ...cheese,
+    rating: getRatingFromReviews(reviewsByCheese[cheese.id] ?? [])
+  }));
 
   return {
     props: {
       cheese: cheeseQuery.cheese,
-      similarCheesesByCategory: similarCheesesQuery.categories
+      similarCheeses: ratedSimilarCheeses
     },
     revalidate: 15
   };

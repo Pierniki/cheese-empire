@@ -15,9 +15,6 @@ const cheeseQueryDocument = gql`
       image {
         url
       }
-      reviews {
-        rating
-      }
     }
   }
 `;

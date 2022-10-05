@@ -1,8 +1,7 @@
+import { formatCurrency } from '@/utils/formatCurrency';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import Image from 'next/image';
-import { formatCurrency } from '@/utils/formatCurrency';
-import _ from 'lodash';
 
 type Props = {
   cheeses: CheeseCardItem[];
@@ -50,8 +49,8 @@ export const CheeseCard: React.FC<CheeseCardProps> = ({ cheese }) => {
             className="object-cover opacity-90 brightness-110"
           />
           <div className="absolute h-full w-full bg-gradient-to-t from-stone-900 via-transparent to-transparent"></div>
-          <div className="absolute top-0 flex w-full items-center justify-between gap-2 p-4">
-            <div className="flex max-w-[60%] gap-2">
+          <div className="absolute top-0 flex w-full items-start justify-between gap-2 p-4">
+            <div className="flex max-w-[70%] flex-wrap gap-2">
               {primaryCategory && (
                 <div className="inline-block whitespace-nowrap rounded-sm bg-amber-500 px-2 shadow-sm">
                   {primaryCategory.name}
@@ -63,7 +62,7 @@ export const CheeseCard: React.FC<CheeseCardProps> = ({ cheese }) => {
                 </div>
               )}
             </div>
-            <div>
+            <div className="py-2">
               <Rating rating={cheese.rating} cheeseId={cheese.id} />
             </div>
           </div>
@@ -82,22 +81,21 @@ export const CheeseCard: React.FC<CheeseCardProps> = ({ cheese }) => {
 
 const Rating: React.FC<{ rating: number; cheeseId: string }> = ({ rating, cheeseId }) => {
   const stars = [1, 2, 3, 4, 5];
-  const doubledRating = Math.floor(rating * 2);
-
   return (
     <div className="flex gap-1">
-      {stars.map((star, idx) => {
+      {stars.map((star) => {
+        const starRatingIdx = star * 2;
         return (
           <div
             key={'rating-star-' + star + '-' + cheeseId}
             className={`relative h-2 w-2 rounded-full ${
-              idx + 1 > rating ? 'bg-slate-400 bg-opacity-40' : ' bg-amber-400'
+              starRatingIdx > rating ? 'bg-slate-400 bg-opacity-40' : ' bg-amber-400'
             }`}
           >
-            {doubledRating === idx * 2 + 1 && (
+            {rating === starRatingIdx - 1 && (
               <div
                 className="absolute top-0 left-0 z-20 h-2 w-2 rounded-full"
-                style={{ background: 'linear-gradient(90deg, rgba(251,191,36) 50%, rgba(23,115,196,0) 50%);' }}
+                style={{ background: 'linear-gradient(90deg, rgba(251,191,36) 50%, rgba(23,115,196,0) 50%)' }}
               ></div>
             )}
           </div>

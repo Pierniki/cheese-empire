@@ -19,9 +19,6 @@ const cheesesByCategoriesQueryDocument = gql`
             id
             name
           }
-          reviews {
-            rating
-          }
         }
       }
     }

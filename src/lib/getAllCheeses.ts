@@ -15,9 +15,6 @@ const allCheesesQueryDocument = gql`
         id
         name
       }
-      reviews {
-        rating
-      }
     }
   }
 `;
