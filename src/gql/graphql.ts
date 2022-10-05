@@ -3087,7 +3087,6 @@ export type Review = Node & {
   publishedBy?: Maybe<User>;
   rating: Scalars['Int'];
   reviewer?: Maybe<Scalars['String']>;
-  reviewerId: Scalars['String'];
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
@@ -3165,7 +3164,6 @@ export type ReviewCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   rating: Scalars['Int'];
   reviewer?: InputMaybe<Scalars['String']>;
-  reviewerId: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -3292,25 +3290,6 @@ export type ReviewManyWhereInput = {
   /** All values that are not contained in given list. */
   rating_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   reviewer?: InputMaybe<Scalars['String']>;
-  reviewerId?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  reviewerId_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  reviewerId_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  reviewerId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  reviewerId_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  reviewerId_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  reviewerId_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  reviewerId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  reviewerId_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  reviewerId_starts_with?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   reviewer_contains?: InputMaybe<Scalars['String']>;
   /** All values ending with the given string. */
@@ -3361,8 +3340,6 @@ export enum ReviewOrderByInput {
   PublishedAtDesc = 'publishedAt_DESC',
   RatingAsc = 'rating_ASC',
   RatingDesc = 'rating_DESC',
-  ReviewerIdAsc = 'reviewerId_ASC',
-  ReviewerIdDesc = 'reviewerId_DESC',
   ReviewerAsc = 'reviewer_ASC',
   ReviewerDesc = 'reviewer_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
@@ -3374,7 +3351,6 @@ export type ReviewUpdateInput = {
   content?: InputMaybe<Scalars['String']>;
   rating?: InputMaybe<Scalars['Int']>;
   reviewer?: InputMaybe<Scalars['String']>;
-  reviewerId?: InputMaybe<Scalars['String']>;
 };
 
 export type ReviewUpdateManyInlineInput = {
@@ -3398,7 +3374,6 @@ export type ReviewUpdateManyInput = {
   content?: InputMaybe<Scalars['String']>;
   rating?: InputMaybe<Scalars['Int']>;
   reviewer?: InputMaybe<Scalars['String']>;
-  reviewerId?: InputMaybe<Scalars['String']>;
 };
 
 export type ReviewUpdateManyWithNestedWhereInput = {
@@ -3550,25 +3525,6 @@ export type ReviewWhereInput = {
   /** All values that are not contained in given list. */
   rating_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   reviewer?: InputMaybe<Scalars['String']>;
-  reviewerId?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  reviewerId_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  reviewerId_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  reviewerId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  reviewerId_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  reviewerId_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  reviewerId_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  reviewerId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  reviewerId_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  reviewerId_starts_with?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   reviewer_contains?: InputMaybe<Scalars['String']>;
   /** All values ending with the given string. */
@@ -5145,6 +5101,13 @@ export type CheeseQueryVariables = Exact<{
 
 export type CheeseQuery = { __typename?: 'Query', cheese?: { __typename?: 'Cheese', description: string, id: string, name: string, price: number, categories: Array<{ __typename?: 'Category', name: string, id: string }>, image: { __typename?: 'Asset', url: string } } | null };
 
+export type CheeseReviewsQueryVariables = Exact<{
+  cheeseId?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type CheeseReviewsQuery = { __typename?: 'Query', reviews: Array<{ __typename?: 'Review', id: string, createdAt: any, content?: string | null, rating: number, reviewer?: string | null }> };
+
 export type CheesesByCategoriesQueryVariables = Exact<{
   name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
 }>;
@@ -5164,7 +5127,6 @@ export type CreateCheeseReviewMutationVariables = Exact<{
   reviewer?: InputMaybe<Scalars['String']>;
   content?: InputMaybe<Scalars['String']>;
   cheeseId: Scalars['ID'];
-  reviewerId: Scalars['String'];
 }>;
 
 
@@ -5180,9 +5142,10 @@ export type PublishCheeseReviewMutation = { __typename?: 'Mutation', publishRevi
 
 export const AllCheesesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllCheeses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cheeses"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1000"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<AllCheesesQuery, AllCheesesQueryVariables>;
 export const CheeseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Cheese"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cheese"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}}]} as unknown as DocumentNode<CheeseQuery, CheeseQueryVariables>;
+export const CheeseReviewsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CheeseReviews"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cheeseId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reviews"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"cheese"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cheeseId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"reviewer"}}]}}]}}]} as unknown as DocumentNode<CheeseReviewsQuery, CheeseReviewsQueryVariables>;
 export const CheesesByCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CheesesByCategories"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name_in"}},"type":{"kind":"ListType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name_in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name_in"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"cheeses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Cheese"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<CheesesByCategoriesQuery, CheesesByCategoriesQueryVariables>;
 export const ReviewRatingsByCheeseIdsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ReviewRatingsByCheeseIds"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cheeseIds"}},"type":{"kind":"ListType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reviews"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"cheese"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cheeseIds"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"last"},"value":{"kind":"IntValue","value":"100"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"cheese"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<ReviewRatingsByCheeseIdsQuery, ReviewRatingsByCheeseIdsQueryVariables>;
-export const CreateCheeseReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateCheeseReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"rating"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reviewer"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"content"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cheeseId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reviewerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createReview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"rating"},"value":{"kind":"Variable","name":{"kind":"Name","value":"rating"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"reviewer"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reviewer"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"reviewerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reviewerId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"content"},"value":{"kind":"Variable","name":{"kind":"Name","value":"content"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"cheese"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cheeseId"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateCheeseReviewMutation, CreateCheeseReviewMutationVariables>;
+export const CreateCheeseReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateCheeseReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"rating"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reviewer"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"content"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cheeseId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createReview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"rating"},"value":{"kind":"Variable","name":{"kind":"Name","value":"rating"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"reviewer"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reviewer"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"content"},"value":{"kind":"Variable","name":{"kind":"Name","value":"content"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"cheese"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cheeseId"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateCheeseReviewMutation, CreateCheeseReviewMutationVariables>;
 export const PublishCheeseReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"PublishCheeseReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"publishReview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<PublishCheeseReviewMutation, PublishCheeseReviewMutationVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -8263,7 +8226,6 @@ export type Review = Node & {
   publishedBy?: Maybe<User>;
   rating: Scalars['Int'];
   reviewer?: Maybe<Scalars['String']>;
-  reviewerId: Scalars['String'];
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
@@ -8341,7 +8303,6 @@ export type ReviewCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   rating: Scalars['Int'];
   reviewer?: InputMaybe<Scalars['String']>;
-  reviewerId: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -8468,25 +8429,6 @@ export type ReviewManyWhereInput = {
   /** All values that are not contained in given list. */
   rating_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   reviewer?: InputMaybe<Scalars['String']>;
-  reviewerId?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  reviewerId_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  reviewerId_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  reviewerId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  reviewerId_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  reviewerId_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  reviewerId_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  reviewerId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  reviewerId_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  reviewerId_starts_with?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   reviewer_contains?: InputMaybe<Scalars['String']>;
   /** All values ending with the given string. */
@@ -8537,8 +8479,6 @@ export enum ReviewOrderByInput {
   PublishedAtDesc = 'publishedAt_DESC',
   RatingAsc = 'rating_ASC',
   RatingDesc = 'rating_DESC',
-  ReviewerIdAsc = 'reviewerId_ASC',
-  ReviewerIdDesc = 'reviewerId_DESC',
   ReviewerAsc = 'reviewer_ASC',
   ReviewerDesc = 'reviewer_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
@@ -8550,7 +8490,6 @@ export type ReviewUpdateInput = {
   content?: InputMaybe<Scalars['String']>;
   rating?: InputMaybe<Scalars['Int']>;
   reviewer?: InputMaybe<Scalars['String']>;
-  reviewerId?: InputMaybe<Scalars['String']>;
 };
 
 export type ReviewUpdateManyInlineInput = {
@@ -8574,7 +8513,6 @@ export type ReviewUpdateManyInput = {
   content?: InputMaybe<Scalars['String']>;
   rating?: InputMaybe<Scalars['Int']>;
   reviewer?: InputMaybe<Scalars['String']>;
-  reviewerId?: InputMaybe<Scalars['String']>;
 };
 
 export type ReviewUpdateManyWithNestedWhereInput = {
@@ -8726,25 +8664,6 @@ export type ReviewWhereInput = {
   /** All values that are not contained in given list. */
   rating_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   reviewer?: InputMaybe<Scalars['String']>;
-  reviewerId?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  reviewerId_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  reviewerId_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  reviewerId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  reviewerId_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  reviewerId_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  reviewerId_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  reviewerId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  reviewerId_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  reviewerId_starts_with?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   reviewer_contains?: InputMaybe<Scalars['String']>;
   /** All values ending with the given string. */
@@ -10321,6 +10240,13 @@ export type CheeseQueryVariables = Exact<{
 
 export type CheeseQuery = { __typename?: 'Query', cheese?: { __typename?: 'Cheese', description: string, id: string, name: string, price: number, categories: Array<{ __typename?: 'Category', name: string, id: string }>, image: { __typename?: 'Asset', url: string } } | null };
 
+export type CheeseReviewsQueryVariables = Exact<{
+  cheeseId?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type CheeseReviewsQuery = { __typename?: 'Query', reviews: Array<{ __typename?: 'Review', id: string, createdAt: any, content?: string | null, rating: number, reviewer?: string | null }> };
+
 export type CheesesByCategoriesQueryVariables = Exact<{
   name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
 }>;
@@ -10340,7 +10266,6 @@ export type CreateCheeseReviewMutationVariables = Exact<{
   reviewer?: InputMaybe<Scalars['String']>;
   content?: InputMaybe<Scalars['String']>;
   cheeseId: Scalars['ID'];
-  reviewerId: Scalars['String'];
 }>;
 
 
@@ -10388,6 +10313,17 @@ export const CheeseDocument = gql`
   }
 }
     `;
+export const CheeseReviewsDocument = gql`
+    query CheeseReviews($cheeseId: ID = "") {
+  reviews(where: {cheese: {id: $cheeseId}}) {
+    id
+    createdAt
+    content
+    rating
+    reviewer
+  }
+}
+    `;
 export const CheesesByCategoriesDocument = gql`
     query CheesesByCategories($name_in: [String] = "") {
   categories(where: {name_in: $name_in}) {
@@ -10423,9 +10359,9 @@ export const ReviewRatingsByCheeseIdsDocument = gql`
 }
     `;
 export const CreateCheeseReviewDocument = gql`
-    mutation CreateCheeseReview($rating: Int!, $reviewer: String = "", $content: String = "", $cheeseId: ID!, $reviewerId: String!) {
+    mutation CreateCheeseReview($rating: Int!, $reviewer: String = "", $content: String = "", $cheeseId: ID!) {
   createReview(
-    data: {rating: $rating, reviewer: $reviewer, reviewerId: $reviewerId, content: $content, cheese: {connect: {id: $cheeseId}}}
+    data: {rating: $rating, reviewer: $reviewer, content: $content, cheese: {connect: {id: $cheeseId}}}
   ) {
     id
   }
@@ -10451,6 +10387,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Cheese(variables?: CheeseQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CheeseQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<CheeseQuery>(CheeseDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Cheese', 'query');
+    },
+    CheeseReviews(variables?: CheeseReviewsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CheeseReviewsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CheeseReviewsQuery>(CheeseReviewsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CheeseReviews', 'query');
     },
     CheesesByCategories(variables?: CheesesByCategoriesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CheesesByCategoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<CheesesByCategoriesQuery>(CheesesByCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CheesesByCategories', 'query');

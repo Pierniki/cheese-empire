@@ -2,6 +2,7 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { Rating } from './Rating';
 
 type Props = {
   cheeses: CheeseCardItem[];
@@ -63,7 +64,7 @@ export const CheeseCard: React.FC<CheeseCardProps> = ({ cheese }) => {
               )}
             </div>
             <div className="py-2">
-              <Rating rating={cheese.rating} cheeseId={cheese.id} />
+              <Rating rating={cheese.rating} />
             </div>
           </div>
           <div className="absolute -bottom-8 flex w-full items-end justify-between p-4 text-white">
@@ -76,31 +77,5 @@ export const CheeseCard: React.FC<CheeseCardProps> = ({ cheese }) => {
         <div className="h-8 bg-stone-900 pb-0"></div>
       </div>
     </Link>
-  );
-};
-
-const Rating: React.FC<{ rating: number; cheeseId: string }> = ({ rating, cheeseId }) => {
-  const stars = [1, 2, 3, 4, 5];
-  return (
-    <div className="flex gap-1">
-      {stars.map((star) => {
-        const starRatingIdx = star * 2;
-        return (
-          <div
-            key={'rating-star-' + star + '-' + cheeseId}
-            className={`relative h-2 w-2 rounded-full ${
-              starRatingIdx > rating ? 'bg-slate-400 bg-opacity-40' : ' bg-amber-400'
-            }`}
-          >
-            {rating === starRatingIdx - 1 && (
-              <div
-                className="absolute top-0 left-0 z-20 h-2 w-2 rounded-full"
-                style={{ background: 'linear-gradient(90deg, rgba(251,191,36) 50%, rgba(23,115,196,0) 50%)' }}
-              ></div>
-            )}
-          </div>
-        );
-      })}
-    </div>
   );
 };

@@ -6,21 +6,9 @@ import {
 import hygraphClient, { gql } from './hygraphClient';
 
 const createReviewMutationDocument = gql`
-  mutation CreateCheeseReview(
-    $rating: Int!
-    $reviewer: String = ""
-    $content: String = ""
-    $cheeseId: ID!
-    $reviewerId: String!
-  ) {
+  mutation CreateCheeseReview($rating: Int!, $reviewer: String = "", $content: String = "", $cheeseId: ID!) {
     createReview(
-      data: {
-        rating: $rating
-        reviewer: $reviewer
-        reviewerId: $reviewerId
-        content: $content
-        cheese: { connect: { id: $cheeseId } }
-      }
+      data: { rating: $rating, reviewer: $reviewer, content: $content, cheese: { connect: { id: $cheeseId } } }
     ) {
       id
     }
