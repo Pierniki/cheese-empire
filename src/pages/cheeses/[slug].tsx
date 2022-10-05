@@ -114,7 +114,7 @@ const CheesePage: NextPage<InferNextProps<typeof getStaticProps>> = ({ cheese, s
                     <p className="font-semibold">
                       {review.reviewer && review.reviewer !== '' ? review.reviewer : 'Anonymous'}
                     </p>
-                    <span className="mt-1 text-xs">{new Date(review.createdAt).toLocaleDateString()}</span>
+                    <span className="mt-1 text-xs">{review.createdAt}</span>
                   </div>
                   <Rating rating={review.rating} />
                   {review.content && <p>{review.content}</p>}
@@ -160,10 +160,12 @@ export const getStaticProps = async ({ params }: { params: { slug: string } }) =
     name_in: cheese.categories.map((category) => category.name)
   });
 
-  const cheeseReviewsQuery = await getCheeseReviews({ cheeseId: cheese.id });
+  const thisCheeseReviews = await getCheeseReviews({ cheeseId: cheese.id }).then((res) =>
+    res.reviews.map((review) => ({ ...review, createdAt: new Date(review.createdAt).toDateString() }))
+  );
   const similarCheeses = similarCheesesQuery.categories
     .flatMap((cat) => cat.cheeses)
-    .filter((cheese) => cheese.id !== cheese.id);
+    .filter((similarCheese) => similarCheese.id !== cheese.id);
 
   const reviews = await getRatingByCheeseIds({
     cheeseIds: similarCheeses.map((cheese) => cheese.id)
@@ -178,7 +180,7 @@ export const getStaticProps = async ({ params }: { params: { slug: string } }) =
   return {
     props: {
       cheese: cheese,
-      reviews: cheeseReviewsQuery.reviews,
+      reviews: thisCheeseReviews,
       similarCheeses: ratedSimilarCheeses
     },
     revalidate: 15
