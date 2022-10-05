@@ -3,16 +3,20 @@ import hygraphClient, { gql } from './hygraphClient';
 
 const allCheesesQueryDocument = gql`
   query AllCheeses {
-    cheeses {
+    cheeses(first: 1000) {
       id
       name
       slug
+      price
       image {
         url
       }
       categories {
         id
         name
+      }
+      reviews {
+        rating
       }
     }
   }

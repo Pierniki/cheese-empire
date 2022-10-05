@@ -11,12 +11,16 @@ const cheesesByCategoriesQueryDocument = gql`
           id
           name
           slug
+          price
           image {
             url
           }
           categories {
             id
             name
+          }
+          reviews {
+            rating
           }
         }
       }

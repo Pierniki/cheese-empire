@@ -7,12 +7,16 @@ const cheeseQueryDocument = gql`
       description
       id
       name
+      price
       categories {
         name
         id
       }
       image {
         url
+      }
+      reviews {
+        rating
       }
     }
   }

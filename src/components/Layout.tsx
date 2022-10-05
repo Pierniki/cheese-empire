@@ -12,7 +12,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <>
       <DefaultSeo {...SEO} />
-      <div className="flex min-h-screen flex-col overflow-y-auto scroll-smooth bg-yellow-50 antialiased">
+      <div className="flex min-h-screen flex-col overflow-y-auto scroll-smooth bg-[#fcfbf0] antialiased">
         <Navbar />
         <div className="flex flex-1 flex-col">{children}</div>
         <Footer />

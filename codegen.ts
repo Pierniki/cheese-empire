@@ -7,6 +7,12 @@ const config: CodegenConfig = {
 
   generates: {
     'src/gql': {
+      config: {
+        flattenGeneratedTypes: true,
+        flattenGeneratedTypesIncludeFragments: true,
+        exportFragmentSpreadSubTypes: true,
+        mergeFragmentTypes: true
+      },
       preset: 'client',
       plugins: ['typescript', 'typescript-operations', 'typescript-graphql-request']
     }

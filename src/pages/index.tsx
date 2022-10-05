@@ -1,16 +1,18 @@
 import { CheeseGrid } from '@/components/CheeseGrid';
 import { Hero } from '@/components/Hero';
 import { getAllCheeses } from '@/lib/getAllCheeses';
+import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
 import { InferNextProps } from '@/utils/InferStaticProps';
 import type { NextPage } from 'next';
 
 const Home: NextPage<InferNextProps<typeof getStaticProps>> = (props) => {
+  console.log(props.cheeses);
   return (
     <>
       <Hero />
       <section className="bg-yellow-50" id="offer">
         <div className="container mx-auto px-16 py-16">
-          <h5 className="mb-16 w-full  text-center font-serif text-5xl font-bold text-stone-900">Our offer</h5>
+          <h5 className="mb-16 w-full  text-center font-serif text-5xl font-bold text-stone-900">Our best products:</h5>
           <CheeseGrid cheeses={props.cheeses} />
         </div>
       </section>
@@ -19,9 +21,20 @@ const Home: NextPage<InferNextProps<typeof getStaticProps>> = (props) => {
 };
 
 export const getStaticProps = async () => {
-  const res = await getAllCheeses();
+  const cheesesQuery = await getAllCheeses();
+
+  const cheeses = cheesesQuery.cheeses
+    .map((cheese) => ({
+      ...cheese,
+      rating: getRatingFromReviews(cheese.reviews)
+    }))
+    .sort((a, b) => b.rating - a.rating);
+
   return {
-    props: res
+    props: {
+      cheeses
+    },
+    revalidate: 15
   };
 };
 
