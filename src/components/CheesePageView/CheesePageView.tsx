@@ -1,5 +1,4 @@
 import { getCheeseReviews } from '@/lib/getCheeseReviews';
-import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import React from 'react';
 import { useQuery } from 'react-query';

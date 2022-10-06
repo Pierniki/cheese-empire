@@ -18,10 +18,20 @@ export const Pagination: React.FC<Props> = ({ pageIdx, perPage, setPage, allItem
 
   return (
     <div className="flex h-4 w-full items-center justify-center gap-1 text-lg text-stone-900">
-      <button disabled={disabled || pageIdx === 0} className="disabled:opacity-50" onClick={() => setPage(0)}>
+      <button
+        disabled={disabled || pageIdx === 0}
+        className="disabled:opacity-50"
+        onClick={() => setPage(0)}
+        name="pagination-start"
+      >
         <FaAngleDoubleLeft />
       </button>
-      <button disabled={disabled || pageIdx === 0} className="disabled:opacity-50" onClick={() => setPage(pageIdx - 1)}>
+      <button
+        disabled={disabled || pageIdx === 0}
+        className="disabled:opacity-50"
+        onClick={() => setPage(pageIdx - 1)}
+        name="pagination-back"
+      >
         <FaAngleLeft />
       </button>
       {getArrayOfNumbers(paginationStart, paginationEnd)
@@ -44,6 +54,7 @@ export const Pagination: React.FC<Props> = ({ pageIdx, perPage, setPage, allItem
         disabled={disabled || pageIdx === lastPage - 1}
         className="disabled:opacity-50"
         onClick={() => setPage(pageIdx + 1)}
+        name="pagination-forward"
       >
         <FaAngleRight />
       </button>
@@ -51,6 +62,7 @@ export const Pagination: React.FC<Props> = ({ pageIdx, perPage, setPage, allItem
         disabled={disabled || pageIdx === lastPage - 1}
         className="disabled:opacity-50"
         onClick={() => setPage(lastPage - 1)}
+        name="pagination-end"
       >
         <FaAngleDoubleRight />
       </button>

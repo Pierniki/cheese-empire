@@ -28,7 +28,7 @@ export const CheeseDetailsBox: React.FC<Props> = ({ cheese }) => {
       </div>
       <div className="flex flex-col gap-2 font-roboto ">
         <h2 className="text-4xl font-semibold">{cheese.name}</h2>
-        <h4 className="text-3xl font-bold">{formatCurrency(cheese.price)}</h4>
+        <h3 className="text-3xl font-bold">{formatCurrency(cheese.price)}</h3>
         <div className="flex gap-2">
           {cheese.categories.map((category) => {
             return (
