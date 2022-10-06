@@ -1,5 +1,4 @@
-import { CheeseGrid } from '@/components/CheeseGrid';
-import { Hero } from '@/components/Hero';
+import { HomeView } from '@/components/HomeView';
 import { getAllCheeses } from '@/lib/getAllCheeses';
 import { getRatingByCheeseIds } from '@/lib/getRatingByCheeseIds';
 import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
@@ -8,17 +7,7 @@ import _ from 'lodash';
 import type { NextPage } from 'next';
 
 const Home: NextPage<InferNextProps<typeof getStaticProps>> = (props) => {
-  return (
-    <>
-      <Hero />
-      <section className="bg-yellow-50" id="offer">
-        <div className="container mx-auto p-8 sm:p-16">
-          <h5 className="mb-16 w-full  text-center font-serif text-5xl font-bold text-stone-900">Our best products:</h5>
-          <CheeseGrid cheeses={props.cheeses} />
-        </div>
-      </section>
-    </>
-  );
+  return <HomeView {...props} />;
 };
 
 export const getStaticProps = async () => {

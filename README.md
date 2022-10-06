@@ -2,10 +2,11 @@
 
 Fake e-commerce site selling cheese
 
-# TODOS
+# TODOS and IDEAS
 
 - [ ] cart
 - [x] product prices
-- [ ] product rating
+- [x] product rating
+- [ ] per category view
 - [ ] localization
 - [ ] make graphql-codegen work with fragments

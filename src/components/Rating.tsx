@@ -1,8 +1,9 @@
+import { getArrayOfNumbers } from '@/utils/getArrayOfNumbers';
 import { useId } from 'react';
 
 export const Rating: React.FC<{ rating: number; size?: string }> = ({ rating, size }) => {
   const ratingId = useId();
-  const stars = [1, 2, 3, 4, 5];
+  const stars = getArrayOfNumbers(1, 5);
   return (
     <div className="flex gap-1">
       {stars.map((star) => {

@@ -5,7 +5,7 @@ import React from 'react';
 import { Rating } from './Rating';
 
 type Props = {
-  cheeses: CheeseCardItem[];
+  cheeses: CheeseSimple[];
 };
 
 export const CheeseGrid: React.FC<Props> = ({ cheeses }) => {
@@ -18,11 +18,7 @@ export const CheeseGrid: React.FC<Props> = ({ cheeses }) => {
   );
 };
 
-type CheeseCardProps = {
-  cheese: CheeseCardItem;
-};
-
-export type CheeseCardItem = {
+export type CheeseSimple = {
   slug: string;
   id: string;
   name: string;
@@ -34,7 +30,7 @@ export type CheeseCardItem = {
   };
 };
 
-export const CheeseCard: React.FC<CheeseCardProps> = ({ cheese }) => {
+const CheeseCard: React.FC<{ cheese: CheeseSimple }> = ({ cheese }) => {
   const primaryCategory = cheese.categories[0];
   const secondaryCategory = cheese.categories[1];
 
