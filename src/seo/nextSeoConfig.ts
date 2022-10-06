@@ -7,7 +7,7 @@ export const seoConfig: DefaultSeoProps = {
   openGraph: {
     type: 'website',
     locale: 'en_IE',
-    url: 'https://www.cheese-empire.it/',
+    url: 'https://cheese-empire.vercel.app',
     site_name: 'CheeseEmpire'
   },
   twitter: {
