@@ -20,7 +20,7 @@ export type CheeseDetails = {
 
 export const CheeseDetailsBox: React.FC<Props> = ({ cheese }) => {
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2" key={cheese.id}>
       <div className="contrast-110 relative h-full min-h-[300px] shadow-sm saturate-[0.9] sm:min-h-[400px]">
         <Image layout="fill" src={cheese.image.url} className="object-cover" alt={cheese.name} priority />
         <div className="absolute h-full w-full bg-gradient-to-t from-stone-900 via-transparent to-transparent"></div>

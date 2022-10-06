@@ -1,5 +1,6 @@
 import { getCheeseReviews } from '@/lib/getCheeseReviews';
 import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { CheeseGrid, CheeseSimple } from '../CheeseGrid';
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export const CheesePageView: React.FC<Props> = ({ cheese, similarCheeses, initialReviews }) => {
+  const [containerRef] = useAutoAnimate<HTMLDivElement>();
   const { push } = useSnackbar();
   const [reviewed, setReviewed] = React.useState<boolean>(false);
 
@@ -43,7 +45,7 @@ export const CheesePageView: React.FC<Props> = ({ cheese, similarCheeses, initia
   return (
     <div className="container mx-auto p-4 sm:p-16">
       <div className="mt-8">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4" ref={containerRef}>
           <CheeseDetailsBox cheese={cheese} />
           {reviews !== undefined && (
             <>
