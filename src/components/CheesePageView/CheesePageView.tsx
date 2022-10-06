@@ -23,7 +23,7 @@ export const CheesePageView: React.FC<Props> = ({ cheese, similarCheeses, initia
       getCheeseReviews({ cheeseId: cheese.id }).then((res) =>
         res.reviews.map((review) => ({ ...review, createdAt: new Date(review.createdAt).toDateString() }))
       ),
-    { initialData: initialReviews, keepPreviousData: true, refetchOnMount: false, refetchOnWindowFocus: false }
+    { initialData: initialReviews, keepPreviousData: true, refetchOnMount: true, refetchOnWindowFocus: false }
   );
 
   const onReviewCheeseSuccess = () => {
