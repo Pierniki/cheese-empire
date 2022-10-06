@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { Rating } from '../Rating';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 interface Props {
   reviews: Review[];
@@ -15,8 +16,10 @@ export type Review = {
 };
 
 export const ReviewsList: React.FC<Props> = ({ reviews }) => {
+  const [listRef] = useAutoAnimate<HTMLDivElement>();
+
   return (
-    <div className="flex flex-col gap-4 font-roboto text-stone-900">
+    <div className="flex flex-col gap-4 font-roboto text-stone-900" ref={listRef}>
       {reviews.map((review) => {
         return (
           <div key={'review-' + review.id} className="flex flex-col gap-1">

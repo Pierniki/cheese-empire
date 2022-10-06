@@ -1,12 +1,13 @@
+import { getCheeseReviews } from '@/lib/getCheeseReviews';
+import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
 import React from 'react';
-import { CheeseDetails, CheeseDetailsBox } from './CheeseDetailsBox';
+import { useQuery } from 'react-query';
 import { CheeseGrid, CheeseSimple } from '../CheeseGrid';
 import { Rating } from '../Rating';
-import { Review, ReviewsList } from './ReviewsList';
-import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
+import { useSnackbar } from '../Snackbar';
+import { CheeseDetails, CheeseDetailsBox } from './CheeseDetailsBox';
 import { RateCheeseForm } from './RateCheeseForm';
-import { useQuery } from 'react-query';
-import { getCheeseReviews } from '@/lib/getCheeseReviews';
+import { Review, ReviewsList } from './ReviewsList';
 
 interface Props {
   cheese: CheeseDetails;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export const CheesePageView: React.FC<Props> = ({ cheese, similarCheeses, initialReviews }) => {
+  const { push } = useSnackbar();
   const [reviewed, setReviewed] = React.useState<boolean>(false);
 
   const { data: reviews, refetch } = useQuery(
@@ -28,6 +30,7 @@ export const CheesePageView: React.FC<Props> = ({ cheese, similarCheeses, initia
 
   const onReviewCheeseSuccess = () => {
     refetch();
+    push({ content: 'Thank you for submitting your review!', type: 'success' });
     setReviewed(true);
   };
 
