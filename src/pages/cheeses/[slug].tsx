@@ -40,15 +40,16 @@ export const getStaticProps = async ({ params }: { params: { slug: string } }) =
     name_in: cheese.categories.map((category) => category.name)
   });
 
-  const thisCheeseReviews = await getCheeseReviews({ cheeseId: cheese.id }).then((res) =>
-    res.reviews.map((review) => ({ ...review, createdAt: new Date(review.createdAt).toDateString() }))
-  );
+  const thisCheeseReviews = await getCheeseReviews({ cheeseId: cheese.id, page: 0, perPage: 5 }).then((res) => ({
+    reviews: res.reviews.map((review) => ({ ...review, createdAt: new Date(review.createdAt).toDateString() })),
+    allCount: res.reviewsConnection.aggregate.count
+  }));
   const similarCheeses = similarCheesesQuery.categories
     .flatMap((cat) => cat.cheeses)
     .filter((similarCheese) => similarCheese.id !== cheese.id);
 
   const reviews = await getRatingByCheeseIds({
-    cheeseIds: similarCheeses.map((cheese) => cheese.id)
+    cheeseIds: [...similarCheeses.map((cheese) => cheese.id), cheese.id]
   });
   const reviewsByCheese = _.groupBy(reviews.reviews, 'cheese.id');
 
@@ -59,7 +60,7 @@ export const getStaticProps = async ({ params }: { params: { slug: string } }) =
 
   return {
     props: {
-      cheese: cheese,
+      cheese: { ...cheese, averageRating: getRatingFromReviews(reviewsByCheese[cheese.id] ?? []) },
       initialReviews: thisCheeseReviews,
       similarCheeses: ratedSimilarCheeses
     },

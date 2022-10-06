@@ -5,6 +5,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 interface Props {
   reviews: Review[];
+  allReviewsCount: number;
 }
 
 export type Review = {
@@ -15,7 +16,7 @@ export type Review = {
   id: string;
 };
 
-export const ReviewsList: React.FC<Props> = ({ reviews }) => {
+export const ReviewsList: React.FC<Props> = ({ reviews, allReviewsCount }) => {
   const [listRef] = useAutoAnimate<HTMLDivElement>();
 
   return (
@@ -35,7 +36,7 @@ export const ReviewsList: React.FC<Props> = ({ reviews }) => {
           </div>
         );
       })}
-      {reviews.length === 0 && <p className="text-stone-500">No reviews yet. Be the first one to review!</p>}
+      {allReviewsCount === 0 && <p className="text-stone-500">No reviews yet. Be the first one to review!</p>}
     </div>
   );
 };

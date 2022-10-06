@@ -33,7 +33,7 @@ export const SnackbarMessage: React.FC<{ message: Message; open: boolean; onClos
           exit={{ opacity: 0, transform: 'translateY(100px)' }}
         >
           <div
-            className=" relative mx-8 min-w-[200px] rounded-md bg-green-700 px-8 py-2 text-center font-semibold text-white"
+            className=" relative mx-8 min-w-[200px] rounded-md bg-green-700 px-8 py-2 text-center text-lg font-semibold text-white"
             onMouseEnter={() => debouncedClose.cancel()}
             onMouseLeave={() => debouncedClose()}
           >

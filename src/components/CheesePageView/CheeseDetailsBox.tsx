@@ -13,6 +13,7 @@ export type CheeseDetails = {
   description: string;
   price: number;
   categories: { name: string; id: string }[];
+  averageRating: number;
   image: {
     url: string;
   };
