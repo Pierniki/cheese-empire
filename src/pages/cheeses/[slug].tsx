@@ -60,7 +60,7 @@ export const getStaticProps = async ({ params }: { params: { slug: string } }) =
   return {
     props: {
       cheese: cheese,
-      reviews: thisCheeseReviews,
+      initialReviews: thisCheeseReviews,
       similarCheeses: ratedSimilarCheeses
     },
     revalidate: 15

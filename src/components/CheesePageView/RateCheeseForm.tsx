@@ -4,12 +4,16 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 
-export const RateCheeseForm: React.FC<{ cheeseId: string }> = ({ cheeseId }) => {
-  const { register, handleSubmit } = useForm<{ reviewer: string; rating: string; content: string }>();
+export const RateCheeseForm: React.FC<{ cheeseId: string; onSuccess: () => void }> = ({ cheeseId, onSuccess }) => {
+  const { register, handleSubmit, watch } = useForm<{ reviewer: string; rating: string; content: string }>();
 
-  const rateCheeseMutation = useMutation((input: { rating: number; reviewer?: string; content?: string }) =>
-    reviewCheese({ ...input, cheeseId: cheeseId })
+  const rateCheeseMutation = useMutation(
+    ['rate-cheese', cheeseId],
+    (input: { rating: number; reviewer?: string; content?: string }) => reviewCheese({ ...input, cheeseId: cheeseId }),
+    { onSuccess }
   );
+
+  const content = watch('content', '');
 
   const onSubmit = handleSubmit((data) => rateCheeseMutation.mutate({ ...data, rating: parseInt(data.rating) }));
 
@@ -17,7 +21,7 @@ export const RateCheeseForm: React.FC<{ cheeseId: string }> = ({ cheeseId }) => 
     <div className="mt-4 flex w-full flex-col font-roboto">
       <p className=" bg-amber-300 px-4 py-1 text-lg ">Submit a review:</p>
       <form className="flex w-full flex-col gap-2 bg-stone-900 px-4 py-2 text-sm" onSubmit={onSubmit}>
-        <div className="grid w-full grid-cols-2 gap-8">
+        <div className="grid w-full gap-2 sm:grid-cols-2 sm:gap-8">
           <div className="flex flex-col gap-1">
             <label className="text-gray-50">Your name</label>
             <input type="text" className=" bg-gray-50 p-2" {...register('reviewer')}></input>
@@ -35,18 +39,19 @@ export const RateCheeseForm: React.FC<{ cheeseId: string }> = ({ cheeseId }) => 
             </select>
           </div>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="relative flex flex-col gap-1">
           <label className="text-gray-50">Review:</label>
-          <textarea className="bg-gray-50 p-2" {...register('content')} />
+          <textarea className="bg-gray-50 p-2" {...register('content')} maxLength={1000} />
+          <span className="w-full text-right text-gray-50">{content.length}/1000</span>
         </div>
 
         <div className="my-1 flex items-end justify-end">
-          <button
-            className="transition-bg bg-amber-400 px-4 py-2  duration-100 hover:bg-amber-300 active:bg-amber-200 disabled:opacity-50"
+          <input
+            type="submit"
+            className="transition-bg cursor-pointer bg-amber-400 px-4  py-2 duration-100 hover:bg-amber-300 active:bg-amber-200 disabled:opacity-50"
             disabled={rateCheeseMutation.isLoading}
-          >
-            Submit
-          </button>
+            value="Submit"
+          />
         </div>
       </form>
     </div>

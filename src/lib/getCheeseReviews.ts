@@ -3,7 +3,7 @@ import hygraphClient, { gql } from './hygraphClient';
 
 const cheeseReviewsQueryDocument = gql`
   query CheeseReviews($cheeseId: ID = "") {
-    reviews(where: { cheese: { id: $cheeseId } }) {
+    reviews(where: { cheese: { id: $cheeseId } }, orderBy: createdAt_DESC) {
       id
       createdAt
       content

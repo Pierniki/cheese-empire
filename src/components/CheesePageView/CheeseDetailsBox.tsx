@@ -21,7 +21,7 @@ export type CheeseDetails = {
 export const CheeseDetailsBox: React.FC<Props> = ({ cheese }) => {
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-      <div className="contrast-110 relative h-full min-h-[400px] shadow-sm saturate-[0.9]">
+      <div className="contrast-110 relative h-full min-h-[300px] shadow-sm saturate-[0.9] sm:min-h-[400px]">
         <Image layout="fill" src={cheese.image.url} className="object-cover" alt={cheese.name} />
         <div className="absolute h-full w-full bg-gradient-to-t from-stone-900 via-transparent to-transparent"></div>
       </div>
@@ -39,7 +39,7 @@ export const CheeseDetailsBox: React.FC<Props> = ({ cheese }) => {
         </div>
         <p className="font-roboto">{cheese.description}</p>
 
-        <div className="mt-8 grid grid-cols-2 gap-4">
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="flex flex-col items-start justify-start gap-2">
             <p className="text-xl font-semibold">{'Quantity (100g)'}</p>
             <select className="my-2 w-full px-2 py-1">

@@ -3,7 +3,7 @@ import React from 'react';
 
 export const Navbar = () => {
   return (
-    <div className="relative z-10 w-full bg-yellow-50 shadow-lg">
+    <div className="relative z-10 w-full overflow-hidden bg-yellow-50 shadow-lg">
       <div className="container relative z-10 mx-auto flex items-center justify-center px-16">
         <Divider />
         <Link passHref href="/">

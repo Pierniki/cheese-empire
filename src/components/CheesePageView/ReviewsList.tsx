@@ -28,11 +28,28 @@ export const ReviewsList: React.FC<Props> = ({ reviews }) => {
               <span className="mt-1 text-xs">{review.createdAt}</span>
             </div>
             <Rating rating={review.rating} />
-            {review.content && <p>{review.content}</p>}
+            {review.content && <ReviewContent content={review.content} />}
           </div>
         );
       })}
       {reviews.length === 0 && <p className="text-stone-500">No reviews yet. Be the first one to review!</p>}
     </div>
+  );
+};
+
+const ReviewContent = (props: { content: string }) => {
+  const [showAll, setShowAll] = React.useState<boolean>(false);
+
+  const cutReviewContent = props.content.slice(0, 200);
+
+  if (showAll || props.content.length === cutReviewContent.length) return <p>{props.content}</p>;
+  return (
+    <p>
+      {cutReviewContent}
+      <span className="mr-2">...</span>
+      <button className="font-semibold" onClick={() => setShowAll(true)}>
+        Read more
+      </button>
+    </p>
   );
 };
