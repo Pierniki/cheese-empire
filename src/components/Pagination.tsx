@@ -16,6 +16,8 @@ export const Pagination: React.FC<Props> = ({ pageIdx, perPage, setPage, allItem
   const paginationStart = pageIdx + 1 - 2 > 0 ? pageIdx + 1 - 2 : 1;
   const paginationEnd = pageIdx + 3 > lastPage ? lastPage : pageIdx + 3;
 
+  if (lastPage <= 1) return null;
+
   return (
     <div className="flex h-4 w-full items-center justify-center gap-1 text-lg text-stone-900">
       <button disabled={disabled || pageIdx === 0} className="disabled:opacity-50" onClick={() => setPage(0)}>
