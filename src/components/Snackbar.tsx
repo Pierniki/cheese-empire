@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { RiCloseCircleFill } from 'react-icons/ri';

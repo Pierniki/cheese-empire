@@ -6,7 +6,7 @@ import { getCheesesByCategories } from '@/lib/getCheesesByCategories';
 import { getRatingByCheeseIds } from '@/lib/getRatingByCheeseIds';
 import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
 import { InferNextProps } from '@/utils/InferStaticProps';
-import { groupBy } from 'lodash';
+import groupBy from 'lodash/groupBy';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 

@@ -3,7 +3,7 @@ import { getAllCheeses } from '@/lib/getAllCheeses';
 import { getRatingByCheeseIds } from '@/lib/getRatingByCheeseIds';
 import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
 import { InferNextProps } from '@/utils/InferStaticProps';
-import { groupBy } from 'lodash';
+import groupBy from 'lodash/groupBy';
 import type { NextPage } from 'next';
 
 const Home: NextPage<InferNextProps<typeof getStaticProps>> = (props) => {
