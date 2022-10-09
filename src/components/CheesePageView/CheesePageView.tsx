@@ -44,6 +44,10 @@ export const CheesePageView: React.FC<Props> = ({ cheese, similarCheeses, initia
     setReviewed(true);
   };
 
+  const onReviewCheeseError = () => {
+    push({ content: 'Something went wrong with submitting your review.', type: 'error' });
+  };
+
   React.useEffect(() => {
     setReviewsPage(0);
     setReviewed(false);
@@ -73,7 +77,9 @@ export const CheesePageView: React.FC<Props> = ({ cheese, similarCheeses, initia
               />
             </>
           )}
-          {!reviewed && <RateCheeseForm cheeseId={cheese.id} onSuccess={onReviewCheeseSuccess} />}
+          {!reviewed && (
+            <RateCheeseForm cheeseId={cheese.id} onSuccess={onReviewCheeseSuccess} onError={onReviewCheeseError} />
+          )}
         </div>
       </div>
       {similarCheeses.length > 0 && (

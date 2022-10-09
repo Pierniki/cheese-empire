@@ -4,13 +4,20 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 
-export const RateCheeseForm: React.FC<{ cheeseId: string; onSuccess: () => void }> = ({ cheeseId, onSuccess }) => {
+export const RateCheeseForm: React.FC<{ cheeseId: string; onSuccess: () => void; onError: () => void }> = ({
+  cheeseId,
+  onSuccess,
+  onError
+}) => {
   const { register, handleSubmit, watch } = useForm<{ reviewer: string; rating: string; content: string }>();
 
   const rateCheeseMutation = useMutation(
     ['rate-cheese', cheeseId],
     (input: { rating: number; reviewer?: string; content?: string }) => reviewCheese({ ...input, cheeseId: cheeseId }),
-    { onSuccess }
+    {
+      onSuccess,
+      onError
+    }
   );
 
   const content = watch('content', '');

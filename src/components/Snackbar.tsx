@@ -11,7 +11,7 @@ export const SnackbarMessage: React.FC<{ message: Message; open: boolean; onClos
 }) => {
   const [mounted, setMounted] = React.useState<boolean>(false);
 
-  const debouncedClose = React.useMemo(() => debounce(onClose, 3000), []);
+  const debouncedClose = React.useMemo(() => debounce(onClose, 4000), []);
 
   React.useEffect(() => {
     setMounted(true);
@@ -33,7 +33,9 @@ export const SnackbarMessage: React.FC<{ message: Message; open: boolean; onClos
           exit={{ opacity: 0, transform: 'translateY(100px)' }}
         >
           <div
-            className=" relative mx-8 min-w-[200px] rounded-md bg-green-700 px-8 py-2 text-center text-lg font-semibold text-white"
+            className={`relative mx-8 min-w-[200px] rounded-md  px-8 py-2 text-center text-lg font-semibold text-white ${
+              message.type === 'success' ? 'bg-green-700' : 'bg-red-600'
+            }`}
             onMouseEnter={() => debouncedClose.cancel()}
             onMouseLeave={() => debouncedClose()}
           >
