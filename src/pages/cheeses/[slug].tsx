@@ -3,7 +3,7 @@ import { getAllCheeses } from '@/lib/getAllCheeses';
 import { getCheese } from '@/lib/getCheese';
 import { getCheeseReviews } from '@/lib/getCheeseReviews';
 import { getCheesesByCategories } from '@/lib/getCheesesByCategories';
-import { getRatingByCheeseIds } from '@/lib/getRatingByCheeseIds';
+import { getReviewsByCheeseIds } from '@/lib/getReviewsByCheeseIds';
 import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
 import { InferNextProps } from '@/utils/InferStaticProps';
 import groupBy from 'lodash/groupBy';
@@ -48,7 +48,7 @@ export const getStaticProps = async ({ params }: { params: { slug: string } }) =
     .flatMap((cat) => cat.cheeses)
     .filter((similarCheese) => similarCheese.id !== cheese.id);
 
-  const reviews = await getRatingByCheeseIds({
+  const reviews = await getReviewsByCheeseIds({
     cheeseIds: [...similarCheeses.map((cheese) => cheese.id), cheese.id]
   });
   const reviewsByCheese = groupBy(reviews.reviews, 'cheese.id');
