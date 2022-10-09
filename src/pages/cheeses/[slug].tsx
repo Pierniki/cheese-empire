@@ -6,7 +6,7 @@ import { getCheesesByCategories } from '@/lib/getCheesesByCategories';
 import { getRatingByCheeseIds } from '@/lib/getRatingByCheeseIds';
 import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
 import { InferNextProps } from '@/utils/InferStaticProps';
-import _ from 'lodash';
+import { groupBy } from 'lodash';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
@@ -51,7 +51,7 @@ export const getStaticProps = async ({ params }: { params: { slug: string } }) =
   const reviews = await getRatingByCheeseIds({
     cheeseIds: [...similarCheeses.map((cheese) => cheese.id), cheese.id]
   });
-  const reviewsByCheese = _.groupBy(reviews.reviews, 'cheese.id');
+  const reviewsByCheese = groupBy(reviews.reviews, 'cheese.id');
 
   const ratedSimilarCheeses = similarCheeses.map((cheese) => ({
     ...cheese,

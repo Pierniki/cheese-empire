@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { RiCloseCircleFill } from 'react-icons/ri';
@@ -11,7 +11,7 @@ export const SnackbarMessage: React.FC<{ message: Message; open: boolean; onClos
 }) => {
   const [mounted, setMounted] = React.useState<boolean>(false);
 
-  const debouncedClose = React.useMemo(() => _.debounce(onClose, 3000), []);
+  const debouncedClose = React.useMemo(() => debounce(onClose, 3000), []);
 
   React.useEffect(() => {
     setMounted(true);

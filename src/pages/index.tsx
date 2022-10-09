@@ -3,7 +3,7 @@ import { getAllCheeses } from '@/lib/getAllCheeses';
 import { getRatingByCheeseIds } from '@/lib/getRatingByCheeseIds';
 import { getRatingFromReviews } from '@/utils/getRatingFromReviews';
 import { InferNextProps } from '@/utils/InferStaticProps';
-import _ from 'lodash';
+import { groupBy } from 'lodash';
 import type { NextPage } from 'next';
 
 const Home: NextPage<InferNextProps<typeof getStaticProps>> = (props) => {
@@ -14,7 +14,7 @@ export const getStaticProps = async () => {
   const cheesesQuery = await getAllCheeses();
 
   const reviews = await getRatingByCheeseIds({ cheeseIds: cheesesQuery.cheeses.map((cheese) => cheese.id) });
-  const reviewsByCheese = _.groupBy(reviews.reviews, 'cheese.id');
+  const reviewsByCheese = groupBy(reviews.reviews, 'cheese.id');
 
   const cheeses = cheesesQuery.cheeses
     .map((cheese) => ({

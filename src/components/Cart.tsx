@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { omit } from 'lodash';
 import React, { useContext } from 'react';
 import { z } from 'zod';
 
@@ -55,7 +55,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const removeItem = (id: string) => {
-    setCart(_.omit(cart, id));
+    setCart(omit(cart, id));
   };
   return (
     <CartContext.Provider value={{ items: Object.values(cart ?? []), addItem, removeItem }}>
