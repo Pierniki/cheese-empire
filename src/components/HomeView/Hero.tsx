@@ -8,6 +8,9 @@ type Props = {
 export const Hero: React.FC<Props> = () => {
   return (
     <section className="relative grid min-h-[800px] w-full overflow-hidden" id="hero">
+      <div className="absolute -top-4 z-10 flex w-full justify-center lg:-top-12 ">
+        <div className="h-8 w-8 rotate-45 bg-yellow-50 lg:h-16 lg:w-16"></div>
+      </div>
       <div className="container mx-auto grid grid-cols-1 p-8  lg:grid-cols-5 lg:p-16">
         <div className="z-10 mx-auto flex max-w-[600px] flex-col items-center justify-center border-4 border-yellow-50 p-8 font-serif text-yellow-50 lg:col-span-2 lg:p-12">
           <p className="text-center text-4xl font-bold text-yellow-50">
