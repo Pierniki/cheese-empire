@@ -7,7 +7,7 @@ import { z } from 'zod';
  */
 export const serverSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']),
-  ANALYZE: z.enum(['true', 'false'])
+  ANALYZE: z.enum(['true', 'false']).optional()
 });
 
 /**
